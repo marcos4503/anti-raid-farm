@@ -1,6 +1,6 @@
-Theses steps were runned, to prepare this project to use Mixins:
+These steps were runned, to prepare this project to use Mixins:
 
-1.  Make sure that the project was already seted up, and that the "Minecraft Development" extension
+1.  Make sure that the project was already setup, and that the "Minecraft Development" extension
     is installed in the IDE. This extension is needed for work with Mixins.
 
 2.  We need to make the following changes to the "build.gradle" file, in order to configure the project
@@ -27,12 +27,13 @@ Theses steps were runned, to prepare this project to use Mixins:
     }
 
 6.  In the new "mixin" block, that we have added in the step 5, add the text below, to setup the
-    inportante settings, needed by MixinGradle Plugin.
+    important settings, needed by MixinGradle Plugin.
     -
     // MixinGradle Settings
     add sourceSets.main, 'mixins.mymod.refmap.json'
     config 'mixins.mymod.json'
 
+    // Disable these two, for JARs for public distribution
     debug.verbose = true
     debug.export = true
     -
@@ -55,13 +56,14 @@ Theses steps were runned, to prepare this project to use Mixins:
     This command need to be runned again, if a option of MixinGradle Plugin, that affect a run, is changed.
 
 9.  In the path "src/main/resources" in the project, create a file with the name of "mixins.ModName.json".
+    In the name, replace the "ModName" with the ID of yor mod. For example "mixins.antiraidfarm.json".
     Inside this file, put the text below
     -
     {
         "required": true,
         "compatibilityLevel": "JAVA_17",
         "package": "com.example.ModName.mixin",
-        "refmap": "windsoft.mixin-refmap.json",
+        "refmap": "mixins.ModName.refmap.json",
         "injectors":{
             "defaultRequire": 1
         },
@@ -80,14 +82,23 @@ Theses steps were runned, to prepare this project to use Mixins:
 12. Go back to the JSON file created in step 9, and, in "package" variable, replace the value with
     the full package name of your mod, until "mixin" folder. Example: "xyz.windsoft.antiraidfarm.mixin"
 
-13. Run a Gradle Sync in IDE. Make sure that don't have errors.
+13. Go back to the JSON file created in step 9, and, in "refmap" variable, replace the part where
+    have "ModName" with the Mod ID of your mod. Example: "mixins.antiraidfarm.refmap.json"
 
-14. Now, open the IDE Terminal, for your mod project. And depending if the Terminal is the "CMD" or
+14. Again, go to file "build.gradle", and find the block "mixin". Inside this block, go to the line
+    that have the "add" parameter and replace the text 'mixins.mymod.refmap.json' with the exact value
+    of the variable "refmap", present inside the file created in step 9. If these two don't match,
+    the builded JARs of your mod, not will have a Refmap present, what will generate crashes when
+    game try to load Mixins of your mod.
+
+15. Run a Gradle Sync in IDE. Make sure that don't have errors.
+
+16. Now, open the IDE Terminal, for your mod project. And depending if the Terminal is the "CMD" or
     "PowerShell", run the commands...
     For CMD:        - set JAVA_HOME="C:\Users\junio\AppData\Local\JetBrains\JDK\temurin-17.0.16" & ./gradlew genIntellijRuns
     For PowerShell: - $env:JAVA_HOME="C:\Users\junio\AppData\Local\JetBrains\JDK\temurin-17.0.16" ; ./gradlew genIntellijRuns
 
-15. Now the project is ready to use of Mixins! Remember, all Java Scripts that will use Mixins, need
+17. Now the project is ready to use of Mixins! Remember, all Java Scripts that will use Mixins, need
     to be created inside "mixin" folder, created on side of the "Main.java" file. And the name of
     these Java Scripts, must end with "Mixin.java" for better organization. Example: "SpeedStatusEffectMixin.java".
     For each new Mixin class created, do a reference for it in the file created in step 9. For example,

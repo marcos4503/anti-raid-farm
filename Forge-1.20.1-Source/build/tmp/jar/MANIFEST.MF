@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Specification-Title: antiraidfarm
+Specification-Vendor: Marcos Tomaz, Windsoft
+Specification-Version: 1
+Implementation-Title: Anti-Raid-Farm
+Implementation-Version: 1.0.1
+Implementation-Vendor: Marcos Tomaz, Windsoft
+Implementation-Timestamp: 2025-10-31T16:14:03-0300
+MixinConfigs: mixins.antiraidfarm.json
+

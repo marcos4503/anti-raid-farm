@@ -151,7 +151,7 @@ dependencies {
 
 mixin {
     // MixinGradle Settings
-    add sourceSets.main, 'mixins.mymod.refmap.json'
+    add sourceSets.main, 'mixins.antiraidfarm.refmap.json'
     config 'mixins.antiraidfarm.json'
 
     // Disable these two, for JARs for public distribution

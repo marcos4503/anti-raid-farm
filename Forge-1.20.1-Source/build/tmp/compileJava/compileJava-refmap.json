@@ -1,0 +1,14 @@
+{
+  "mappings": {
+    "xyz/windsoft/antiraidfarm/mixin/RaidsMixin": {
+      "createOrExtendRaid": "Lnet/minecraft/world/entity/raid/Raids;m_37963_(Lnet/minecraft/server/level/ServerPlayer;)Lnet/minecraft/world/entity/raid/Raid;"
+    }
+  },
+  "data": {
+    "searge": {
+      "xyz/windsoft/antiraidfarm/mixin/RaidsMixin": {
+        "createOrExtendRaid": "Lnet/minecraft/world/entity/raid/Raids;m_37963_(Lnet/minecraft/server/level/ServerPlayer;)Lnet/minecraft/world/entity/raid/Raid;"
+      }
+    }
+  }
+}
