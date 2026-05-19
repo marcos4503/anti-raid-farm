@@ -20,6 +20,10 @@ import xyz.windsoft.antiraidfarm.events.OnPlayerClone;
 
 /*
  * This class is the Entry Point for this mod
+ *
+ * Information about side that this Class will run:
+ * [ ] Only in Client at all - [ ] Only in Server at all - [ ] Both at all - [X] In Both sides, but some Standard/Events/Overrides Methods run on Client and Server at SAME time AND some Standard/Events/Overrides Methods run ONLY on Client OR Server.
+ *                                                                               The Synchronization of some variables/properties from this Class, running in the Server to Clients running this, MAY be needed, according to needs of this Class
  */
 
 // The value here should match an entry in the META-INF/mods.toml file

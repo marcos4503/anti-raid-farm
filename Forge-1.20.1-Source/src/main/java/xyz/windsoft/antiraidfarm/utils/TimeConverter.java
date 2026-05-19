@@ -1,7 +1,11 @@
 package xyz.windsoft.antiraidfarm.utils;
 
 /*
- * This class handle the time conversion to readable by humens
+ * This class handle the time conversion to readable by humans
+ *
+ * Information about side that this Class will run:
+ * [ ] Only in Client at all - [ ] Only in Server at all - [X] Both at all - [ ] In Both sides, but some Standard/Events/Overrides Methods run on Client and Server at SAME time AND some Standard/Events/Overrides Methods run ONLY on Client OR Server.
+ *                                                                               The Synchronization of some variables/properties from this Class, running in the Server to Clients running this, MAY be needed, according to needs of this Class
  */
 
 public class TimeConverter {

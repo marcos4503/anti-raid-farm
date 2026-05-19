@@ -16,6 +16,10 @@ import xyz.windsoft.antiraidfarm.utils.TimeConverter;
 
 /*
  * This class have the Mixins for inject code into "Raids" mechanic
+ *
+ * Information about side that this Class will run:
+ * [ ] Only in Client at all - [ ] Only in Server at all - [ ] Both at all - [X] In Both sides, but some Standard/Events/Overrides Methods run on Client and Server at SAME time AND some Standard/Events/Overrides Methods run ONLY on Client OR Server.
+ *                                                                               The Synchronization of some variables/properties from this Class, running in the Server to Clients running this, MAY be needed, according to needs of this Class
  */
 
 //All code changes by Injections, Overwrites, Redirections, etc. in this class, will apply to the "Raids.class" of the game code...
