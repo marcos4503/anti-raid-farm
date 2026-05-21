@@ -3,6 +3,7 @@
     <br> 
     To download the JAR file for this mod, go to the <a href="https://github.com/marcos4503/anti-raid-farm/releases">Releases</a> page.
 </p>
+<hr>
 <p align="center" style="font-size: 2px;">
     Main Branches of the Project
     <br>
@@ -10,6 +11,7 @@
         <th><a href="https://github.com/marcos4503/anti-raid-farm/tree/1.20.1-forge">1.20.1 Forge</a></th>
     </table>
 </p>
+<hr>
 
 # About this Mod
 
