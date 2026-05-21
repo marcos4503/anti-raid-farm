@@ -18,7 +18,7 @@ This mod does the following:
 This mod requires Minecraft Java with Forge Mod Loader installed. You can see the supported Minecraft versions in the folders of this Repository.
 
 Minimum required Forge version:
-- For Minecraft 1.20.1 is 47.2.0
+- For Minecraft 1.20.1  is 47.2.0
 
 # Support projects like this
 
