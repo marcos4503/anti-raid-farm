@@ -6,9 +6,7 @@
 <hr>
 <p align="center" style="font-size: 2px;">
     <b>Main Branches of the Project</b>
-    <table>
-        <th><a href="https://github.com/marcos4503/anti-raid-farm/tree/1.20.1-forge">1.20.1 Forge</a></th>
-    </table>
+    <a href="https://github.com/marcos4503/anti-raid-farm/tree/1.20.1-forge">1.20.1 Forge</a>
 </p>
 <hr>
 
