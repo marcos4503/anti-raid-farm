@@ -1,5 +1,9 @@
 <p align="center" style="font-size: 2px;">
-    <img src="This-Repository/mod-cover.png" />
+    <img src=".github/assets/mod-cover.png" />
+
+
+
+
     <br> 
     To download this mod's JAR file, go to the folder corresponding to your Minecraft version, in this Repository, like "Forge-XX.XX.XX-JARs". All JAR versions of this mod will be located there.
 </p>
