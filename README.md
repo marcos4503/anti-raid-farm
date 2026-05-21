@@ -5,11 +5,11 @@
 </p>
 <hr>
 <p align="center" style="font-size: 2px;">
-    <sub><b>Main Branches of the Project</b></sub>
+    <b>Main Branches of the Project</b>
     <br>
-    <sub><a href="https://github.com/marcos4503/anti-raid-farm">Main</a></sub>
+    <a href="https://github.com/marcos4503/anti-raid-farm">Main</a>
     •
-    <sub><a href="https://github.com/marcos4503/anti-raid-farm/tree/1.20.1-forge">1.20.1 Forge</a></sub>
+    <a href="https://github.com/marcos4503/anti-raid-farm/tree/1.20.1-forge">1.20.1 Forge</a>
 </p>
 <hr>
 
