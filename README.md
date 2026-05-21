@@ -3,10 +3,13 @@
     <br> 
     To download the JAR file for this mod, go to the <a href="https://github.com/marcos4503/anti-raid-farm/releases">Releases</a> page.
 </p>
-
----
-ads
----
+<p align="center" style="font-size: 2px;">
+    Main Branches of the Project
+    <br>
+    <table>
+        <th>1.20.1 Forge</th>
+    </table>
+</p>
 
 # About this Mod
 
