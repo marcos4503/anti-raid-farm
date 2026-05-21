@@ -1,11 +1,11 @@
 <p align="center" style="font-size: 2px;">
     <img src=".github/assets/mod-cover.png" />
     <br> 
-    To download the JAR file for this mod, go to the <a href="https://github.com/marcos4503/anti-raid-farm/releases">Releases</a> page.
+    <sub>To download the JAR file for this mod, go to the <a href="https://github.com/marcos4503/anti-raid-farm/releases">Releases</a> page.</sub>
 </p>
 <hr>
 <p align="center" style="font-size: 2px;">
-    <sub>Main Branches of the Project</sub>
+    <b>Main Branches of the Project</b>
     <table>
         <th><a href="https://github.com/marcos4503/anti-raid-farm/tree/1.20.1-forge">1.20.1 Forge</a></th>
     </table>
