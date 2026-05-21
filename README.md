@@ -4,6 +4,10 @@
     To download the JAR file for this mod, go to the <a href="https://github.com/marcos4503/anti-raid-farm/releases">Releases</a> page.
 </p>
 
+---
+ads
+---
+
 # About this Mod
 
 This mod was developed to mitigate how OP farms based on intentional Raids on Villages are in the game. If you want to curb these abuses, this mod is for you. Not to mention that the idea of ​​a player forcing Raids on Villages with innocent Villagers, just to obtain resources, is quite disturbing. 😂
