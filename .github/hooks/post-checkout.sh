@@ -1,17 +1,17 @@
 #!/bin/sh
 
-# This script is automatically executed by the integrated Git Bash, and run
+# This script is automatically executed by the system Git Bash, and run
 # when the current active Branch is changed in this Repository, locally on this
-# machine. If you edit this, create a copy of this, without a extension and
-# save in this path, with the name of "post-checkout".
+# machine.
 
 echo "===================================================="
-echo "Git Hook: Cleaning files informed on '.gitignore'..."
+echo "Git Hook: Running Smart Branch Switch"
 echo "===================================================="
 
-# Delete everything that is listed on ".gitignore" (builds, caches, trash, etc)
-git clean -fdX
-
-# Forces Git to delete empty folders that was remained on repository, when the
-# currently active Branch was changed...
-git clean -fd
+# Get the current real path of this Bash Script
+DIR="$(dirname "$0")"
+# Run the Smart Branch Switch
+# $3 = Change Flag. If 1, is a Branch change. If 0, is just a file change.
+# $1 = Hash of the old Branch
+# $2 = Hash of the current Branch
+"$DIR/Smart-Branch-Switch.exe" "$3" "$1" "$2"
