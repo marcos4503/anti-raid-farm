@@ -20,61 +20,261 @@ cls
 
 
 
+::Display the title
+call :DRAW_TITLE "Running starting checks..."
+echo:
 ::Warn about Git installation check
-echo ===================================================================
 echo - Checking Git installation on Windows system...
-
 ::If the Git is not installed, stop here...
 where git >nul 2>nul
 if %errorlevel% neq 0 (
-    cls
-    echo:
-    echo %RED%ERROR!%RESET% It's not possible to find Git installed on your system. Please install it and try again.
-    echo        If Git is already installed, try restarting your computer.
+    echo - %RED%ERROR!%RESET% It's not possible to find Git installed on your system. Please install it and try
+    echo          again. If Git is already installed, try restarting your computer.
     echo:
     pause
-    exit
+    exit /b
 )
-
 ::Get the installed Git version in safe way
 for /f "delims=" %%a in ('"git version"') do set "gitCheckResult=%%a"
 set "gitVersionNumber=%gitCheckResult:git version =%"
 ::Inform the found version of Git
 echo - A Git installation was found: "%GRAY%%gitVersionNumber%%RESET%".
-::Show the Repository path of this context
-echo - Context repository: "%GRAY%%cd%%RESET%".
-
-::Get the Hooks present in the ".github/hooks" inside this repository, and inject it in the ".git/hooks" of this
-::Repository. This way, the Hook Scripts will run locally for this repository when some events of Git is fired.
-echo - Injecting Hooks, locally in the "%GRAY%.git%RESET%" folder of this Repository.
-copy /Y ".github\hooks\post-checkout" ".git\hooks\" >nul
-::If was found a error, warn it!
-if %errorlevel% equ 0 (
-    echo - Hooks successfully injected into "%GRAY%.git/hooks%RESET%" of this Repository.
+::Check if this Batch script is inside of a Git repository folder
+echo - Checking Git repository...
+::If this Batch script is not in a Git repository folder, stop here
+set "DOTGITFOLDER=%~dp0.git"
+if exist "%DOTGITFOLDER%\" (
+    echo - This is a valid Git repository folder.
 ) else (
-    echo %RED%ERROR!%RESET% Failed to inject the Hook Scripts. Is this the root of the repository?
+    echo - %RED%ERROR!%RESET% It appears that this Batch script is not running within the root directory of any
+    echo          Git repository on your machine. Please place this script in the root directory of
+    echo          a Git repository and try again.
+    echo:
     pause
-    exit
+    exit /b
 )
-
-::Send the final message
-for %%I in ("%cd%") do set "CURRENT_DIR=%%~nxI"
-echo:
-echo [%GREEN%DONE%RESET%] This repository (%GRAY%%CURRENT_DIR%%RESET%) is now, locally,
-echo        configured to run useful Hook Scripts for this repository.
-echo        The injected Hook Scripts in this local repository, can be
-echo        found on the directory of "%GRAY%.github/hooks%RESET%" inside this
-echo        repository. Now whenever the currently active Branch is
-echo        locally changed on this repository, the Hook Scripts in the
-echo        directory of "%GRAY%.github/hooks%RESET%" will be runned by Git.
-echo:
-echo %BLUE%This ".BAT" don't need to be executed again while this repository
-echo %BLUE%exists locally in this machine.%RESET%
-echo ===================================================================
-echo:
+::Clear the logs until now
+cls
 
 
 
-
-::Pause the script before exit
+::If don't have the Smart Branch Switch installed, go to installation automatically, if is installed, go to Menu
+set "START_SBS_EXE_PATH=%~dp0.git\hooks\Smart-Branch-Switch.exe"
+if exist "%START_SBS_EXE_PATH%" (
+    goto MENU
+) else (
+    goto INSTALL_OR_UPDATE_SBS
+)
+::Pause to wait input from user
 pause
+::Exit from programm, as last step
+exit /b
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+::--------- Start of MENU block ---------
+:MENU
+::Clear the old text
+cls
+::Draw the title
+call :DRAW_TITLE "Main Menu"
+echo:
+echo Please, choose a option number:
+echo:
+echo 1 - Install/Update Smart Branch Switch in this Local Repository
+echo 2 - Read last execution Log
+echo 3 - Clear Smart Branch Switch Limbo and ignored files
+echo 0 - Uninstall Smart Branch Switch of this Local Repository
+echo:
+set /P menu_choose=Type the number of choosed option: %=%
+::Send the user to desired option
+if "%menu_choose%"=="1" goto INSTALL_OR_UPDATE_SBS
+if "%menu_choose%"=="2" goto READ_LAST_LOG
+if "%menu_choose%"=="3" goto CLEAR_LIMBO_AND_IGNORED_FILES
+if "%menu_choose%"=="0" goto UNINSTALL_SBS
+::As fallback, send the user back to the menu
+goto MENU
+::Pause to wait interaction of user
+pause
+::Exit from programm, as last step
+exit /b
+::---------- End of MENU block ----------
+
+
+
+
+
+::--------- Start of INSTALL_OR_UPDATE_SBS block ---------
+:INSTALL_OR_UPDATE_SBS
+::Clear the old text
+cls
+::Draw the title
+call :DRAW_TITLE "Install"
+::---------
+::Speaks about the Smart Branch Switch
+echo:
+echo %CYAN%What is the Smart Branch Switch?%RESET%
+echo:
+echo Smart Branch Switch is a utility that runs whenever your Local Repository switches the active
+echo Branch. It's called by the Git binary that you're using to interact with your Local Repository.
+echo After the Branch is switched, Smart Branch Switch executes some hooks, running useful 
+echo functions. Among these functions, the main one is to retrieve files ignored by the previous
+echo Branch and place them in a Limbo exclusive to that old Branch, keeping your Local Repository
+echo clean and organized, maintaining only the files that truly belong to the new active Branch.
+echo When you revert to the old Branch, the files in its Limbo are restored, as if nothing had
+echo happened. No more ignored files mixing across Branches and contaminating everything!
+echo:
+echo Smart Branch Switch focuses on the scope of your Git Local Repository. It only runs on your
+echo machine, within the scope of your Local Repository, and of course, only if you choose to
+echo install it in your Local Repository. Furthermore, when you install it, Git doesn't track it,
+echo which means that when you Commit and Push, on your Local Repository, nothing from the Smart
+echo Branch Switch goes to the Remote Repository.
+echo - Learn more at: %GRAY%https://github.com/marcos4503/smart-branch-switch%RESET%
+echo:
+choice /C SN /M "Do you want to install/update the Smart Branch Switch in this Local Repository"
+if errorlevel 2 exit /b
+echo:
+echo - Starting installation or update (if already is installed)...
+set "INSTALL_SBS_EXE_PATH=%~dp0.git\hooks\Smart-Branch-Switch.exe"
+if exist "%INSTALL_SBS_EXE_PATH%" (
+    echo - The Smart Branch Switch already is installed.
+) else (
+    echo:
+    echo %YELLOW%WARNING%RESET%
+    echo:
+    echo Since the Smart Branch Switch is being installed from scratch in your Local Repository, it is
+    echo necessary to delete all ignored files that currently exist in your Local Repository. Without
+    echo performing this step, the Smart Branch Switch may have trouble tracking ignored files correctly,
+    echo which can affect its performance. This will be done automatically by this tool, and will not 
+    echo affect ANYTHING that is tracked by Git. Before continuing, make sure you have committed anything
+    echo you were working on!
+    echo:
+    choice /C SN /M "Continue"
+    if errorlevel 2 exit /b
+    echo:
+    echo - Deleting untracked and ignored files from Local Repository...
+    git clean -d -x -f
+)
+::---------
+::Pause to wait interaction of user
+pause
+::As fallback, send the user back to the menu
+goto MENU
+::Exit from programm, as last step
+exit /b
+::---------- End of INSTALL_OR_UPDATE_SBS block ----------
+
+
+
+
+
+::--------- Start of READ_LAST_LOG block ---------
+:READ_LAST_LOG
+::Clear the old text
+cls
+::Draw the title
+call :DRAW_TITLE "Read Log"
+::---------
+
+::---------
+::Pause to wait interaction of user
+pause
+::As fallback, send the user back to the menu
+goto MENU
+::Exit from programm, as last step
+exit /b
+::---------- End of READ_LAST_LOG block ----------
+
+
+
+
+
+::--------- Start of CLEAR_LIMBO_AND_IGNORED_FILES block ---------
+:CLEAR_LIMBO_AND_IGNORED_FILES
+::Clear the old text
+cls
+::Draw the title
+call :DRAW_TITLE "Clear Limbo And Ignored Files"
+::---------
+
+::---------
+::Pause to wait interaction of user
+pause
+::As fallback, send the user back to the menu
+goto MENU
+::Exit from programm, as last step
+exit /b
+::---------- End of CLEAR_LIMBO_AND_IGNORED_FILES block ----------
+
+
+
+
+
+::--------- Start of UNINSTALL_SBS block ---------
+:UNINSTALL_SBS
+::Clear the old text
+cls
+::Draw the title
+call :DRAW_TITLE "Uninstall"
+::---------
+
+::---------
+::Pause to wait interaction of user
+pause
+::As fallback, send the user back to the menu
+goto MENU
+::Exit from programm, as last step
+exit /b
+::---------- End of UNINSTALL_SBS block ----------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+::---------- Script methods ----------
+::Prevent this script from running the methods below directly
+exit /b
+
+::Start of DRAW_TITLE method (arg1 = subtitle)
+:DRAW_TITLE
+    set "ARG1=%~1"
+    echo ===========================================================================================
+    echo =                                   Smart Branch Switch                                   =
+    echo ===========================================================================================
+    echo - %ARG1%
+goto :eof
+::End of DRAW_TITLE method
+
+::------------------------------------
