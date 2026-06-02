@@ -312,7 +312,28 @@ cls
 ::Draw the title
 call :DRAW_TITLE "Clear Limbo And Ignored Files"
 ::---------
-
+::Show a warning
+echo:
+echo %YELLOW%WARNING%RESET%
+echo:
+echo This action will delete all files that the Smart Branch Switch stores in the Limbo of all
+echo Branches. It will also delete files that Git ignores or not track in the current Branch.
+echo:
+choice /C SN /M "Continue"
+if errorlevel 2 goto CLEAR_LIMBO_AND_IGNORED_FILES_END
+echo:
+::Delete the Limbo folder
+echo - Deleting Limbo folder...
+set "LIMBO_PATH=%~dp0.git\sbs\limbo"
+if exist "%LIMBO_PATH%\" (
+    rmdir /S /Q "%LIMBO_PATH%"
+)
+::Delete the untracked or ignored files existing on Repository, if desired
+echo - Deleting untracked and ignored files from Local Repository...
+git clean -d -x -f
+::Show a final space
+:CLEAR_LIMBO_AND_IGNORED_FILES_END
+echo:
 ::---------
 ::Pause to wait interaction of user
 pause
