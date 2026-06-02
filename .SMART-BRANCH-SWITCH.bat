@@ -148,30 +148,117 @@ echo which means that when you Commit and Push, on your Local Repository, nothin
 echo Branch Switch goes to the Remote Repository.
 echo - Learn more at: %GRAY%https://github.com/marcos4503/smart-branch-switch%RESET%
 echo:
+::Confirm before continue...
 choice /C SN /M "Do you want to install/update the Smart Branch Switch in this Local Repository"
 if errorlevel 2 exit /b
+::If "Yes", continue...
 echo:
 echo - Starting installation or update (if already is installed)...
+::Check if the Smart Branch Switch already is installed...
+set "RUN_GIT_CLEAN=false"
 set "INSTALL_SBS_EXE_PATH=%~dp0.git\hooks\Smart-Branch-Switch.exe"
 if exist "%INSTALL_SBS_EXE_PATH%" (
-    echo - The Smart Branch Switch already is installed.
+    ::If is already installed, warn it
+    echo - The Smart Branch Switch already is installed. Updating it...
 ) else (
+    ::If not installed yet, prompt before delete all untracked and ignored files existing on repository
     echo:
     echo %YELLOW%WARNING%RESET%
     echo:
     echo Since the Smart Branch Switch is being installed from scratch in your Local Repository, it is
     echo necessary to delete all ignored files that currently exist in your Local Repository. Without
     echo performing this step, the Smart Branch Switch may have trouble tracking ignored files correctly,
-    echo which can affect its performance. This will be done automatically by this tool, and will not 
-    echo affect ANYTHING that is tracked by Git. Before continuing, make sure you have committed anything
-    echo you were working on!
+    echo which can affect its operation. This step will be done automatically by this tool, on end of 
+    echo the install, and will not affect ANYTHING that is tracked by Git. Before continuing, make sure 
+    echo you have committed anything you were working on!
     echo:
     choice /C SN /M "Continue"
     if errorlevel 2 exit /b
     echo:
+    set "RUN_GIT_CLEAN=true"
+)
+::Create the "sbs_install" temporary folder inside the ".git" folder
+echo - Preparing temporary files
+set "SBS_INSTALL_PATH=%~dp0.git\sbs_install"
+if not exist "%SBS_INSTALL_PATH%" (
+    mkdir "%SBS_INSTALL_PATH%"
+)
+::Download the "post-checkout" file
+echo - Starting download of Git Bash Script of Hook of Smart Branch Switch...
+set "SH_DOWNLOAD_PATH=%~dp0.git\sbs_install\post-checkout"
+curl -L -f --progress-bar -o "%SH_DOWNLOAD_PATH%" "https://marcos4503.github.io/smart-branch-switch/metadata/windows/post-checkout.sh"
+if %errorlevel%==0 (
+    echo - Download finished at: "%SH_DOWNLOAD_PATH%"
+) else (
+    echo - Can't download a file. Please check your internet connection and try again.
+    echo:
+    pause
+    goto INSTALL_OR_UPDATE_SBS_END
+)
+::Download the "bin-download-url.txt" file
+echo - Starting download of Metadata files for Windows...
+set "BINURL_DOWNLOAD_PATH=%~dp0.git\sbs_install\bin-url.txt"
+curl -L -f --progress-bar -o "%BINURL_DOWNLOAD_PATH%" "https://marcos4503.github.io/smart-branch-switch/metadata/windows/bin-download-url.txt"
+if %errorlevel%==0 (
+    echo - Download finished at: "%BINURL_DOWNLOAD_PATH%"
+) else (
+    echo - Can't download a file. Please check your internet connection and try again.
+    echo:
+    pause
+    goto INSTALL_OR_UPDATE_SBS_END
+)
+::Download the "Smart-Branch-Switch.exe" file (the URL is extracted from "bin-download-url.txt" file)
+echo - Starting download of Core Binary of Smart Branch Switch for Windows...
+set "BINARY_DOWNLOAD_PATH=%~dp0.git\sbs_install\Smart-Branch-Switch.exe"
+set "BIN_URL_CONTENT_FILE="
+for /f "usebackq delims=" %%A in ("%BINURL_DOWNLOAD_PATH%") do (
+    set "BIN_URL_CONTENT_FILE=%%A"
+)
+curl -L -f --progress-bar -o "%BINARY_DOWNLOAD_PATH%" "%BIN_URL_CONTENT_FILE%"
+if %errorlevel%==0 (
+    echo - Download finished at: "%BINARY_DOWNLOAD_PATH%"
+) else (
+    echo - Can't download a file. Please check your internet connection and try again.
+    echo:
+    pause
+    goto INSTALL_OR_UPDATE_SBS_END
+)
+::Check if the "hooks" folder exists inside ".git" folder
+echo - Checking if "hooks" folder exists...
+set "DOTGITHOOKSFOLDER=%~dp0.git\hooks"
+if exist "%DOTGITHOOKSFOLDER%\" (
+    echo - The "hooks" folder was found!
+) else (
+    echo - Can't install the Smart Branch Switch in this Local Repository.
+    echo:
+    pause
+    goto INSTALL_OR_UPDATE_SBS_END
+)
+::Move the downloaded files
+set "SH_FINAL_PATH=%~dp0.git\hooks\post-checkout"
+move /Y "%SH_DOWNLOAD_PATH%" "%SH_FINAL_PATH%"
+set "BINARY_FINAL_PATH=%~dp0.git\hooks\Smart-Branch-Switch.exe"
+move /Y "%BINARY_DOWNLOAD_PATH%" "%BINARY_FINAL_PATH%"
+::Inform that the installation was finished
+if exist "%BINARY_FINAL_PATH%" (
+    echo:
+    echo %CYAN%======================================================================================================%RESET%
+    echo %CYAN%Installation/update complete! Switch active Branch in your repository to test the Smart Branch Switch!%RESET%
+    echo %CYAN%======================================================================================================%RESET%
+    echo:
+)
+::Delete the untracked or ignored files existing on Repository, if desired
+if "%RUN_GIT_CLEAN%"=="true" (
     echo - Deleting untracked and ignored files from Local Repository...
     git clean -d -x -f
 )
+::Delete the "sbs_install" temporary folder inside the ".git" folder
+:INSTALL_OR_UPDATE_SBS_END
+echo - Deleting temporary files...
+if exist "%SBS_INSTALL_PATH%\" (
+    rmdir /S /Q "%SBS_INSTALL_PATH%"
+)
+echo:
 ::---------
 ::Pause to wait interaction of user
 pause
@@ -192,7 +279,19 @@ cls
 ::Draw the title
 call :DRAW_TITLE "Read Log"
 ::---------
-
+::Try to open the log of last run of Smart Branch Switch
+set "LOG_PATH=%~dp0.git\hooks\Smart-Branch-Switch.log"
+if exist "%LOG_PATH%" (
+    echo:
+    echo Opening Smart Branch Switch last execution Log...
+    echo:
+    start "" "%LOG_PATH%"
+) else (
+    echo:
+    echo No Log file were found. It appears the Smart Branch Switch hasn't run yet. Try switching
+    echo Branches to run it.
+    echo:
+)
 ::---------
 ::Pause to wait interaction of user
 pause
