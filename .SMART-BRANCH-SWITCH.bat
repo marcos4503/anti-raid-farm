@@ -354,7 +354,52 @@ cls
 ::Draw the title
 call :DRAW_TITLE "Uninstall"
 ::---------
-
+::Show a warning
+echo:
+echo %YELLOW%WARNING%RESET%
+echo:
+echo This action will delete all files that the Smart Branch Switch stores in the Limbo of all
+echo Branches and it cannot be undone. You can always reinstall the Smart Branch Switch using
+echo this script whenever you prefer.
+echo:
+choice /C SN /M "Continue"
+if errorlevel 2 goto UNINSTALL_SBS_END
+echo:
+::Delete "sbs" folder of Smart Branch Switch...
+echo - Deleting Smart Branch Switch data...
+set "SBS_DATA_PATH=%~dp0.git\sbs"
+if exist "%SBS_DATA_PATH%\" (
+    rmdir /S /Q "%SBS_DATA_PATH%"
+)
+::Delete the Git Hooks
+echo - Deleting Smart Branch Switch Git Bash Hook...
+set "SBS_SH_SCRIPT=%~dp0.git\hooks\post-checkout"
+if exist "%SBS_SH_SCRIPT%" (
+    del /F /Q "%SBS_SH_SCRIPT%"
+)
+::Delete the Log
+echo - Deleting Smart Branch Switch Log...
+set "SBS_LOG=%~dp0.git\hooks\Smart-Branch-Switch.log"
+if exist "%SBS_LOG%" (
+    del /F /Q "%SBS_LOG%"
+)
+::Delete the Core Binary
+echo - Deleting Smart Branch Switch Core Binary...
+set "SBS_BIN=%~dp0.git\hooks\Smart-Branch-Switch.exe"
+if exist "%SBS_BIN%" (
+    del /F /Q "%SBS_BIN%"
+)
+::Inform that the uninstall was finished
+echo:
+echo %RED%===================%RESET%
+echo %RED%Uninstall finished!%RESET%
+echo %RED%===================%RESET%
+echo:
+pause
+exit /b
+::Show a final space
+:UNINSTALL_SBS_END
+echo:
 ::---------
 ::Pause to wait interaction of user
 pause
