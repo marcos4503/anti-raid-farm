@@ -186,7 +186,7 @@ if not exist "%SBS_INSTALL_PATH%" (
 ::Download the "post-checkout" file
 echo - Starting download of Git Bash Script of Hook of Smart Branch Switch...
 set "SH_DOWNLOAD_PATH=%~dp0.git\sbs_install\post-checkout"
-curl -L -f --progress-bar -o "%SH_DOWNLOAD_PATH%" "https://marcos4503.github.io/smart-branch-switch/metadata/windows/post-checkout.sh"
+curl -L -f --progress-bar -o "%SH_DOWNLOAD_PATH%" "https://marcos4503.github.io/smart-branch-switch/Repository-Pages/metadata/windows/post-checkout.sh"
 if %errorlevel%==0 (
     echo - Download finished at: "%SH_DOWNLOAD_PATH%"
 ) else (
@@ -198,7 +198,7 @@ if %errorlevel%==0 (
 ::Download the "bin-download-url.txt" file
 echo - Starting download of Metadata files for Windows...
 set "BINURL_DOWNLOAD_PATH=%~dp0.git\sbs_install\bin-url.txt"
-curl -L -f --progress-bar -o "%BINURL_DOWNLOAD_PATH%" "https://marcos4503.github.io/smart-branch-switch/metadata/windows/bin-download-url.txt"
+curl -L -f --progress-bar -o "%BINURL_DOWNLOAD_PATH%" "https://marcos4503.github.io/smart-branch-switch/Repository-Pages/metadata/windows/bin-download-url.txt"
 if %errorlevel%==0 (
     echo - Download finished at: "%BINURL_DOWNLOAD_PATH%"
 ) else (
